@@ -31,13 +31,15 @@ add_action( 'woocommerce_proceed_to_checkout', 'wcgc_cart_form' );
 
 function apply_cart_giftcard()
 {
-	if ( isset( $_POST['giftcard_code'] ) ) 
+	if ( isset( $_POST['giftcard_code'] ) )
 		woocommerce_apply_giftcard( $_POST['giftcard_code'] );
-	
+
 	WC()->cart->calculate_totals();
 
 }
-add_action ( 'woocommerce_before_cart', 'apply_cart_giftcard' );
+// Don't think this being used
+// Its not being used if the form is not on the checkout
+//add_action ( 'woocommerce_before_cart', 'apply_cart_giftcard' );
 
 
 

@@ -23,6 +23,7 @@ class WC_Gift_Card
 	public $balance;
 	public $expiry_date;
 	public $is_email_sent;
+	public $exists = false;
 
 
 
@@ -37,14 +38,15 @@ class WC_Gift_Card
 	}
 
 
-
 	/**
-	 * TODO
 	 * @param $number
+	 *
+	 * @return bool
 	 */
 	public function get_by_number( $number )
 	{
-
+		$post = get_page_by_title( $number, 'OBJECT', WCGC()->post_type );
+		return $this->init( $post );
 	}
 
 
@@ -64,8 +66,27 @@ class WC_Gift_Card
 		// Populate object
 		$this->id = $post->ID;
 		$this->number = $post->post_title;
+		$this->exists = true;
 
 		return true;
+	}
+
+
+	/**
+	 *
+	 */
+	function exists()
+	{
+		return $this->exists;
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	function get_id()
+	{
+		return $this->id;
 	}
 
 
@@ -210,6 +231,25 @@ class WC_Gift_Card
 	function set_email_sent()
 	{
 		update_post_meta( $this->id, 'wcgc_email_sent', true );
+	}
+
+
+	/**
+	 *
+	 */
+	function is_expired()
+	{
+		$expiry_date = $this->get_expiry_date();
+
+		// No expiry date set
+		if ( ! $expiry_date )
+		{
+			return false;
+		}
+
+		$now = current_time('timestamp');
+
+		return ( $now >= strtotime( $expiry_date ) );
 	}
 
 

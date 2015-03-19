@@ -63,6 +63,7 @@ class WC_Gift_Cards
 			$this->hooks();
 
 			$this->auto_send = new WCGC_Auto_Send();
+			new WCGC_Checkout_Hooks();
 		}
 	}
 
@@ -83,10 +84,10 @@ class WC_Gift_Cards
 
 		require_once $this->plugin_path . 'includes/class-auto-send.php';
 		require_once $this->plugin_path . 'includes/class-gift-card.php';
+		require_once $this->plugin_path . 'includes/class-checkout-hooks.php';
 
 		require_once $this->plugin_path . 'includes/giftcard-product.php';
 		require_once $this->plugin_path . 'includes/giftcard-forms.php';
-		require_once $this->plugin_path . 'includes/giftcard-checkout.php';
 		require_once $this->plugin_path . 'includes/giftcard-paypal.php';
 		require_once $this->plugin_path . 'includes/giftcard-shortcodes.php';
 
@@ -352,6 +353,38 @@ class WC_Gift_Cards
 
 		if ( $gift_card != 'yes' )
 			return false;
+
+		return true;
+	}
+
+
+	/**
+	 * @param $gift_card instance of WC_Gift_Card
+	 *
+	 * @return bool|WP_Error
+	 */
+	function apply_gift_card_to_cart( $gift_card )
+	{
+		// Validate gift card already added to cart
+		if ( isset( WC()->session->giftcard_post ) )
+		{
+			return new WP_Error( 'wc-gift-cards', __( 'A Gift Card is already in the cart!', 'wcgiftcards' ) );
+		}
+
+		if ( ! $gift_card->exists() )
+		{
+			return new WP_Error( 'wc-gift-cards', __( 'Gift Card does not exist.', 'wcgiftcards' ) );
+		}
+
+		if ( $gift_card->is_expired() )
+		{
+			return new WP_Error( 'wc-gift-cards', __( 'Gift Card has expired.', 'wcgiftcards' ) );
+		}
+
+		if ( $gift_card->get_balance() <= 0 )
+		{
+			return new WP_Error( 'wc-gift-cards', __( 'Gift Card does not have a balance left.', 'wcgiftcards' ) );
+		}
 
 		return true;
 	}

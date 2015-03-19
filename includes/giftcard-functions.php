@@ -9,6 +9,7 @@
  * @since 1.0
  * @param string $giftcard_id Giftcard ID
  * @return array
+ * @deprecated
  */
 function wcgc_get_giftcard( $giftcard_id ) {
 	$giftcard = get_post( $giftcard_id );
@@ -20,6 +21,9 @@ function wcgc_get_giftcard( $giftcard_id ) {
 	return $giftcard;
 }
 
+/**
+ * @deprecated
+ */
 function wcgc_get_giftcard_by_code( $value = '' ) {
 	global $wpdb;
 

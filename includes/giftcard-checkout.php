@@ -142,74 +142,115 @@ function wcgc_order_giftcard( ) {
 add_action( 'woocommerce_review_order_before_order_total', 'wcgc_order_giftcard' );
 add_action( 'woocommerce_cart_totals_before_order_total', 'wcgc_order_giftcard' );
 
-/**
- * Function to decrease the cart amount by the amount in the giftcard
- *
- */
-function subtract_giftcard( $wc_cart ) {
-	$giftcard_id 	= WC()->session->giftcard_post;
-	$cart 			= WC()->session->cart;
 
-	if ( isset( $giftcard_id ) ) {
-		$balance = wcgc_get_giftcard_balance( $giftcard_id );
+/**
+ * @param $gift_card_id
+ * @param $cart
+ *
+ * @return float
+ */
+function calculate_cart_discount( $gift_card_id, $cart )
+{
+	if ( isset( $gift_card_id ) )
+	{
+		$gift_card = new WC_Gift_Card();
+		$gift_card->get_by_post_id($gift_card_id);
+		$balance = $gift_card->get_balance();
 
 		$charge_shipping 	= get_option('woocommerce_enable_giftcard_charge_shipping');
 		$charge_tax 		= get_option('woocommerce_enable_giftcard_charge_tax');
 		$charge_fee 		= get_option('woocommerce_enable_giftcard_charge_fee');
 		//$charge_giftcard 	= get_option('woocommerce_enable_giftcard_charge_giftcard');
-		$exclude_product 	= array( ); //get_option('exclude_product_ids');
+		$exclude_product 	= array(); //get_option('exclude_product_ids');
 
-		$giftcardPayment = 0;
 
-		foreach( $cart as $key => $product ) {
+		$gift_card_discount = 0;
 
-			if( ! in_array( $product['product_id'], $exclude_product ) ) {
-
-				if( $charge_tax == 'yes' ){
-					$giftcardPayment += $product['line_total'];
-					$giftcardPayment += $product['line_tax'];
-				} else {
-					$giftcardPayment += $product['line_total'];
+		foreach ( $cart->cart_contents as $key => $product )
+		{
+			if( ! in_array( $product['product_id'], $exclude_product ) )
+			{
+				if ( $charge_tax == 'yes' )
+				{
+					$gift_card_discount += $product['line_total'];
+					$gift_card_discount += $product['line_tax'];
+				}
+				else
+				{
+					$gift_card_discount += $product['line_total'];
 				}
 			}
 		}
-		
-
-		if( $charge_shipping == 'yes' )
-			$giftcardPayment += WC()->session->shipping_tax_total;
-			
-
-		if( $charge_tax == "yes" )
-			$giftcardPayment += WC()->session->shipping_total;
 
 
-		if( $charge_fee == "yes" )
-			$giftcardPayment += WC()->session->fee_total;
+		if ( $charge_shipping == 'yes' )
+		{
+			$gift_card_discount += $cart->shipping_total;
 
-
-		if ( $giftcardPayment <= $balance ) {
-			WC()->session->giftcard_payment = $giftcardPayment;
-			WC()->session->discount_cart = $giftcardPayment;
-
-		} else {
-			WC()->session->giftcard_payment = $balance;
-			WC()->session->discount_cart = $balance;
+			if( $charge_tax == "yes" )
+			{
+				$gift_card_discount += $cart->shipping_tax_total;
+			}
 		}
-		
-	}
-}
-add_action( 'woocommerce_calculate_totals', 'subtract_giftcard' ); //woocommerce_calculate_totals   //woocommerce_cart_updated
 
-function wcgc_applydiscount( $total ) {
-	$giftcard_id 	= WC()->session->giftcard_post;
-	
-	if ( isset( $giftcard_id ) ) {
-		$total -= WC()->session->discount_cart;
+		if ( $charge_fee == "yes" )
+			$gift_card_discount += WC()->session->fee_total;
+
+
+		if ( $gift_card_discount <= $balance )
+		{
+			return (float) $gift_card_discount;
+		}
+		else
+		{
+			return (float) $balance;
+		}
+
 	}
-	
-	return $total;
+
 }
-add_filter( 'woocommerce_calculated_total', 'wcgc_applydiscount', 10, 1 );
+
+
+
+
+/**
+ * Function to decrease the cart amount by the amount in the giftcard
+ */
+function subtract_giftcard( $cart )
+{
+	$gift_card_id = WC()->session->giftcard_post;
+
+	$discount = calculate_cart_discount( $gift_card_id, $cart );
+
+	WC()->session->giftcard_payment = $discount;
+	WC()->session->discount_cart = $discount;
+
+}
+add_action( 'woocommerce_calculate_totals', 'subtract_giftcard' );
+
+
+
+/**
+ * Filter cart_total value
+ *
+ * @param $total
+ * @param $cart
+ *
+ * @return float
+ */
+function wcgc_apply_discount( $total, $cart )
+{
+	$gift_card_id = WC()->session->giftcard_post;
+	$discount = WC()->session->giftcard_payment;
+
+	if ( isset( $gift_card_id ) )
+	{
+		$total = $total - $discount;
+	}
+	return (float) $total;
+}
+add_filter( 'woocommerce_calculated_total', 'wcgc_apply_discount', 1, 2 );
+
 
 
 
@@ -228,13 +269,13 @@ function wcgc_add_card_data( $cart_item_key, $product_id, $quantity )
 		);
 
 		if ( isset( $_POST['wcgc_to'] ) && ( $_POST['wcgc_to'] <> '' ) )
-			$giftcard_data['To'] = woocommerce_clean( $_POST['wcgc_to'] );
+			$giftcard_data['To'] = wc_clean( $_POST['wcgc_to'] );
 
 		if ( isset( $_POST['wcgc_to_email'] ) && ( $_POST['wcgc_to_email'] <> '' ) )
-			$giftcard_data['To Email'] = woocommerce_clean( $_POST['wcgc_to_email'] );
+			$giftcard_data['To Email'] = wc_clean( $_POST['wcgc_to_email'] );
 
 		if ( isset( $_POST['wcgc_note'] ) && ( $_POST['wcgc_note'] <> '' ) )
-			$giftcard_data['Note'] = woocommerce_clean( $_POST['wcgc_note'] );
+			$giftcard_data['Note'] = wc_clean( $_POST['wcgc_note'] );
 
 		$giftcard_data = apply_filters( 'wcgc_giftcard_data', $giftcard_data, $_POST );
 

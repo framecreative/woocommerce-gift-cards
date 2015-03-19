@@ -1,12 +1,6 @@
 <?php
 /**
  * Gift Card Short Codes
- *
- * @package     Woocommerce
- * @subpackage  Giftcards
- * @copyright   Copyright (c) 2014, Ryan Pletcher
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.3
  */
 
 // Exit if accessed directly

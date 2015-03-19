@@ -5,11 +5,12 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+
+
 // Admin Columns
-		
-
-
-function wcgc_add_columns( $columns ) {
+function wcgc_add_columns( $columns )
+{
 	$new_columns = ( is_array( $columns ) ) ? $columns : array();
 	unset( $new_columns['title'] );
 	unset( $new_columns['date'] );

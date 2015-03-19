@@ -12,7 +12,7 @@ function wcgc_meta_boxes() {
 	global $post;
 
 	add_meta_box(
-		'rpgc-woocommerce-data',
+		'wcgc-woocommerce-data',
 		__( 'Gift Card Data', 'woocommerce-gift-cards' ),
 		'wcgc_meta_box',
 		WCGC()->post_type,
@@ -25,7 +25,7 @@ function wcgc_meta_boxes() {
 	if ( isset( $data['wcgc_id'] ) )
 		if ( $data['wcgc_id'][0] <> '' )
 			add_meta_box(
-				'rpgc-order-data',
+				'wcgc-order-data',
 				__( 'Gift Card Informaiton', 'woocommerce-gift-cards' ),
 				'wcgc_info_meta_box',
 				'shop_order',
@@ -38,7 +38,7 @@ function wcgc_meta_boxes() {
 	
 	if ( isset ( $_GET['action'] ) )
 		add_meta_box(
-			'rpgc-more-options',
+			'wcgc-more-options',
 			__( 'Additional Card Options', 'woocommerce-gift-cards' ),
 			'wcgc_options_meta_box',
 			WCGC()->post_type,

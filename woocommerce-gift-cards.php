@@ -1,8 +1,9 @@
 <?php
 /*
 Plugin Name: WooCommerce Gift Cards
-Description:
-Version: 0.0.1
+Plugin URI: http://framecreative.com.au
+Description: Allow your customers to send gift cards.
+Version: 1.0.0
 Author: Frame Creative
 Author URI: http://framecreative.com.au
 */
@@ -12,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class WC_Gift_Cards
 {
-	public $plugin_version;
+	public $plugin_version = '1.0.0';
 	public $plugin_prefix;
 	public $plugin_url;
 	public $plugin_path;
@@ -37,7 +38,6 @@ class WC_Gift_Cards
 	public function __construct()
 	{
 		// Define the constants
-		$this->plugin_version = '0.0.1';
 		$this->plugin_prefix = 'wcgc_';
 		$this->plugin_basefile_path = __FILE__;
 		$this->plugin_basefile = plugin_basename( $this->plugin_basefile_path );
@@ -107,11 +107,11 @@ class WC_Gift_Cards
 
 		add_action( 'init', array( $this, 'create_post_type' ) );
 		add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_settings_page' ), 10, 1 );
-		add_action( 'enqueue_scripts', array( $this, 'load_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_frontend_scripts' ) );
 
 		if ( is_admin() )
 		{
-			add_action( 'admin_enqueue_scripts', array( $this, 'load_custom_scripts' ), 99 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_scripts' ), 99 );
 		}
 
 		// Front end hooks
@@ -130,7 +130,7 @@ class WC_Gift_Cards
 	 * @return void
 	 * @access public
 	 */
-	public function load_custom_scripts( $hook )
+	public function load_admin_scripts( $hook )
 	{
 		global $wp_scripts;
 
@@ -140,6 +140,7 @@ class WC_Gift_Cards
 		}
 
 		wp_enqueue_style( 'woocommerce_admin_styles', WC()->plugin_url() . '/assets/css/admin.css' );
+
 		$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.9.2';
 
 		wp_enqueue_script( 'woocommerce_writepanel' );
@@ -154,10 +155,15 @@ class WC_Gift_Cards
 	/**
 	 *
 	 */
-	public function load_styles()
+	public function load_frontend_scripts()
 	{
-		wp_register_style( WCGC()->plugin_prefix . 'style', $this->plugin_path . 'assets/css/style.css', false, $this->plugin_version );
-		wp_enqueue_style( WCGC()->plugin_prefix . 'style' );
+		wp_enqueue_script(
+			'woocommerce-gift-cards',
+			$this->plugin_url . 'assets/js/woocommerce-gift-cards.js',
+			array('jquery-blockui'),
+			$this->plugin_version,
+			true
+		);
 	}
 
 

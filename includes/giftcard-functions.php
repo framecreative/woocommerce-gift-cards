@@ -6,7 +6,6 @@
  *
  * Retrieves a complete giftcard code by giftcard ID.
  *
- * @since 1.0
  * @param string $giftcard_id Giftcard ID
  * @return array
  * @deprecated

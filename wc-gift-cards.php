@@ -186,20 +186,20 @@ class WC_Gift_Cards
 		register_post_type( $this->post_type,
 			array(
 				'labels'              => array(
-					'name'               => __( 'Gift Cards', 'wcgiftcards' ),
-					'singular_name'      => __( 'Gift Card', 'wcgiftcards' ),
-					'menu_name'          => _x( 'Gift Cards', 'Admin menu name', 'wcgiftcards' ),
-					'add_new'            => __( 'Add Gift Card', 'wcgiftcards' ),
-					'add_new_item'       => __( 'Add New Gift Card', 'wcgiftcards' ),
-					'edit'               => __( 'Edit', 'wcgiftcards' ),
-					'edit_item'          => __( 'Edit Gift Card', 'wcgiftcards' ),
-					'new_item'           => __( 'New Gift Card', 'wcgiftcards' ),
-					'view'               => __( 'View Gift Cards', 'wcgiftcards' ),
-					'view_item'          => __( 'View Gift Card', 'wcgiftcards' ),
-					'search_items'       => __( 'Search Gift Cards', 'wcgiftcards' ),
-					'not_found'          => __( 'No Gift Cards found', 'wcgiftcards' ),
-					'not_found_in_trash' => __( 'No Gift Cards found in trash', 'wcgiftcards' ),
-					'parent'             => __( 'Parent Gift Card', 'wcgiftcards' )
+					'name'               => __( 'Gift Cards', 'woocommerce-gift-cards' ),
+					'singular_name'      => __( 'Gift Card', 'woocommerce-gift-cards' ),
+					'menu_name'          => _x( 'Gift Cards', 'Admin menu name', 'woocommerce-gift-cards' ),
+					'add_new'            => __( 'Add Gift Card', 'woocommerce-gift-cards' ),
+					'add_new_item'       => __( 'Add New Gift Card', 'woocommerce-gift-cards' ),
+					'edit'               => __( 'Edit', 'woocommerce-gift-cards' ),
+					'edit_item'          => __( 'Edit Gift Card', 'woocommerce-gift-cards' ),
+					'new_item'           => __( 'New Gift Card', 'woocommerce-gift-cards' ),
+					'view'               => __( 'View Gift Cards', 'woocommerce-gift-cards' ),
+					'view_item'          => __( 'View Gift Card', 'woocommerce-gift-cards' ),
+					'search_items'       => __( 'Search Gift Cards', 'woocommerce-gift-cards' ),
+					'not_found'          => __( 'No Gift Cards found', 'woocommerce-gift-cards' ),
+					'not_found_in_trash' => __( 'No Gift Cards found in trash', 'woocommerce-gift-cards' ),
+					'parent'             => __( 'Parent Gift Card', 'woocommerce-gift-cards' )
 				),
 				'public'              => true,
 				'has_archive'         => true,
@@ -212,7 +212,7 @@ class WC_Gift_Cards
 		);
 
 		register_post_status( 'zerobalance', array(
-			'label'                     => __( 'Zero Balance', 'wcgiftcards' ),
+			'label'                     => __( 'Zero Balance', 'woocommerce-gift-cards' ),
 			'public'                    => true,
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
@@ -246,7 +246,7 @@ class WC_Gift_Cards
 
 		$subject = apply_filters(
 			$this->plugin_prefix . 'gift_card_email_subject',
-			__( 'You have been sent a gift card', 'wcgiftcards' )
+			__( 'You have been sent a gift card', 'woocommerce-gift-cards' )
 		);
 
 
@@ -368,22 +368,22 @@ class WC_Gift_Cards
 		// Validate gift card already added to cart
 		if ( isset( WC()->session->giftcard_post ) )
 		{
-			return new WP_Error( 'wc-gift-cards', __( 'A Gift Card is already in the cart!', 'wcgiftcards' ) );
+			return new WP_Error( 'wc-gift-cards', __( 'A Gift Card is already in the cart!', 'woocommerce-gift-cards' ) );
 		}
 
 		if ( ! $gift_card->exists() )
 		{
-			return new WP_Error( 'wc-gift-cards', __( 'Gift Card does not exist.', 'wcgiftcards' ) );
+			return new WP_Error( 'wc-gift-cards', __( 'Gift Card does not exist.', 'woocommerce-gift-cards' ) );
 		}
 
 		if ( $gift_card->is_expired() )
 		{
-			return new WP_Error( 'wc-gift-cards', __( 'Gift Card has expired.', 'wcgiftcards' ) );
+			return new WP_Error( 'wc-gift-cards', __( 'Gift Card has expired.', 'woocommerce-gift-cards' ) );
 		}
 
 		if ( $gift_card->get_balance() <= 0 )
 		{
-			return new WP_Error( 'wc-gift-cards', __( 'Gift Card does not have a balance left.', 'wcgiftcards' ) );
+			return new WP_Error( 'wc-gift-cards', __( 'Gift Card does not have a balance left.', 'woocommerce-gift-cards' ) );
 		}
 
 		return true;

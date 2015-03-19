@@ -120,13 +120,16 @@ class WCGC_Auto_Send
 
 			$theItem = (int) $item["item_meta"]["_product_id"][0];
 
-			$is_giftcard = get_post_meta( $theItem, '_giftcard', true );
 
-			if ( $is_giftcard == "yes" )
+			if ( WCGC()->is_gift_card( $theItem ) )
 			{
 
 				for ( $i = 0; $i < $qty; $i ++ )
 				{
+					$product = new WC_Product( $theItem );
+
+					$gift_card_value = (float) $product->get_regular_price();
+
 
 					if ( ( $item["item_meta"]["To Email"][0] <> "NA" ) || ( $item["item_meta"]["To Email"][0] <> "" ) )
 					{
@@ -139,7 +142,8 @@ class WCGC_Auto_Send
 					if ( ( $item["item_meta"]["To"][0] <> "NA" ) || ( $item["item_meta"]["To"][0] <> "" ) )
 					{
 						$giftCardInfo[ $numberofGiftCards ]["To"] = $item["item_meta"]["To"][0];
-					} else
+					}
+					else
 					{
 						$giftCardInfo[ $numberofGiftCards ]["To"] = '' . $firstName . ' ' . $lastName . '';
 					}
@@ -147,23 +151,15 @@ class WCGC_Auto_Send
 					if ( $item["item_meta"]["Note"][0] <> "NA" )
 					{
 						$giftCardInfo[ $numberofGiftCards ]["Note"] = $item["item_meta"]["Note"][0];
-					} else
+					}
+					else
 					{
 						$giftCardInfo[ $numberofGiftCards ]["Note"] = "";
 					}
 
-					$product = new WC_Product ( $theItem );
 
-					if ( $product->is_on_sale() )
-					{
-						$giftCardTotal = (float) $product->get_regular_price();
-					} else
-					{
-						$giftCardTotal = (float) $item["item_meta"]["_line_total"][0];
-					}
-
-					$giftCardInfo[ $numberofGiftCards ]["Balance"]     = $giftCardTotal / $qty;
-					$giftCardInfo[ $numberofGiftCards ]["Amount"]      = (float) $item["item_meta"]["_line_total"][0] / $qty;
+					$giftCardInfo[ $numberofGiftCards ]["Balance"]     = $gift_card_value / $qty;
+					$giftCardInfo[ $numberofGiftCards ]["Amount"]      = $gift_card_value / $qty;
 					$giftCardInfo[ $numberofGiftCards ]["Description"] = 'Generated from Website';
 					$giftCardInfo[ $numberofGiftCards ]["From"]        = '' . $firstName . ' ' . $lastName . '';
 					$giftCardInfo[ $numberofGiftCards ]["From Email"]  = $order->billing_email;

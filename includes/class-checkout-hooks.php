@@ -23,8 +23,6 @@ class WCGC_Checkout_Hooks
 		add_action( 'woocommerce_review_order_before_order_total', array( $this, 'order_gift_card' ) );
 		add_action( 'woocommerce_cart_totals_before_order_total', array( $this, 'order_gift_card' ) );
 
-		add_action( 'woocommerce_calculate_totals', array( $this, 'subtract_gift_card' ) );
-
 		add_action( 'woocommerce_add_to_cart', array( $this, 'add_card_data' ), 10, 3 );
 
 		add_action( 'woocommerce_after_cart_table', array( $this, 'display_giftcard_in_cart' ) );
@@ -34,8 +32,9 @@ class WCGC_Checkout_Hooks
 
 		add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'validate_form_complete' ), 10, 5 );
 
-		add_filter( 'woocommerce_get_order_item_totals', array( $this, 'wcgc_add_order_giftcard' ), 10, 2 );
+		add_filter( 'woocommerce_get_order_item_totals', array( $this, 'add_order_giftcard' ), 10, 2 );
 
+		add_action( 'woocommerce_calculate_totals', array( $this, 'subtract_gift_card' ) );
 		add_filter( 'woocommerce_calculated_total', array( $this, 'apply_discount' ), 1, 2 );
 
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'update_card' ) );
@@ -52,7 +51,7 @@ class WCGC_Checkout_Hooks
 		// Validate missing field
 		if ( ! isset( $_POST['giftcard_code'] ) || ! $_POST['giftcard_code'] )
 		{
-			wc_add_notice( __( 'Gift Card number is invalid', 'wcgiftcards' ), 'error' );
+			wc_add_notice( __( 'Gift Card number is invalid', 'woocommerce-gift-cards' ), 'error' );
 			wc_print_notices();
 			die();
 		}
@@ -70,7 +69,7 @@ class WCGC_Checkout_Hooks
 		elseif ( $response )
 		{
 			WC()->session->giftcard_post = $gift_card->get_id();
-			wc_add_notice( __( 'Gift card applied successfully.', 'wcgiftcards' ), 'success' );
+			wc_add_notice( __( 'Gift card applied successfully.', 'woocommerce-gift-cards' ), 'success' );
 		}
 
 		wc_print_notices();
@@ -86,8 +85,6 @@ class WCGC_Checkout_Hooks
 	 */
 	function order_gift_card()
 	{
-		global $woocommerce;
-
 		if ( isset( $_GET['remove_giftcards'] ) )
 		{
 			$type = $_GET['remove_giftcards'];
@@ -103,31 +100,9 @@ class WCGC_Checkout_Hooks
 		{
 			if ( WC()->session->giftcard_post )
 			{
+				$discount = WC()->session->giftcard_payment;
 
-				$currency_symbol = get_woocommerce_currency_symbol();
-
-				$price = WC()->session->giftcard_payment;
-
-				$gotoPage = WC()->cart->get_checkout_url();
-
-				if ( is_cart() )
-				{
-					$gotoPage = WC()->cart->get_cart_url();
-				}
-
-
-				?>
-
-				<tr class="giftcard">
-					<th><?php _e( 'Gift Card Payment', 'wcgiftcards' ); ?> </th>
-
-					<td style="font-size:0.85em;"><?php echo woocommerce_price( $price ); ?> <a
-							href="<?php echo add_query_arg( 'remove_giftcards', '1', $gotoPage ) ?>">[<?php _e( 'Remove Gift Card', 'wcgiftcards' ); ?>
-							]</a></td>
-				</tr>
-
-			<?php
-
+				wc_get_template('checkout-discount-row.php', array('discount' => $discount ), WCGC()->theme_template_path, WCGC()->plugin_template_path );
 			}
 		}
 	}
@@ -238,6 +213,7 @@ class WCGC_Checkout_Hooks
 	}
 
 
+
 	function add_card_data( $cart_item_key, $product_id, $quantity )
 	{
 		global $woocommerce, $post;
@@ -298,7 +274,7 @@ class WCGC_Checkout_Hooks
 
 			if ( $passed == false )
 			{
-				wc_add_notice( __( 'Please complete form.', 'wcgiftcards' ), 'error' );
+				wc_add_notice( __( 'Please complete form.', 'woocommerce-gift-cards' ), 'error' );
 			}
 		}
 
@@ -322,7 +298,7 @@ class WCGC_Checkout_Hooks
 			if ( $theIDNum <> '' )
 			{
 				?>
-				<h4><?php _e( 'Gift Card Balance After Order:', 'wcgiftcards' ); ?><?php echo ' ' . woocommerce_price( $theBalance ); ?> <?php do_action( 'wcgc_after_remaining_balance', $theIDNum, $theBalance ); ?></h4>
+				<h4><?php _e( 'Gift Card Balance After Order:', 'woocommerce-gift-cards' ); ?><?php echo ' ' . woocommerce_price( $theBalance ); ?> <?php do_action( 'wcgc_after_remaining_balance', $theIDNum, $theBalance ); ?></h4>
 
 			<?php
 
@@ -335,7 +311,7 @@ class WCGC_Checkout_Hooks
 			if ( $theGiftCardData <> '' )
 			{
 				?>
-				<h4><?php _e( 'Gift Card Information:', 'wcgiftcards' ); ?></h4>
+				<h4><?php _e( 'Gift Card Information:', 'woocommerce-gift-cards' ); ?></h4>
 				<?php
 				$i = 1;
 
@@ -347,31 +323,31 @@ class WCGC_Checkout_Hooks
 						echo '<div style="margin-bottom: 10px;">';
 					}
 					echo '<div style="float: left; width: 45%; margin-right: 2%;>';
-					echo '<h6><strong> ' . __( 'Giftcard', 'wcgiftcards' ) . ' ' . $i . '</strong></h6>';
+					echo '<h6><strong> ' . __( 'Giftcard', 'woocommerce-gift-cards' ) . ' ' . $i . '</strong></h6>';
 					echo '<ul style="font-size: 0.85em; list-style: none outside none;">';
 					if ( $giftcard[ wcgc_product_num ] )
 					{
-						echo '<li>' . __( 'Card', 'wcgiftcards' ) . ': ' . get_the_title( $giftcard[ wcgc_product_num ] ) . '</li>';
+						echo '<li>' . __( 'Card', 'woocommerce-gift-cards' ) . ': ' . get_the_title( $giftcard[ wcgc_product_num ] ) . '</li>';
 					}
 					if ( $giftcard[ wcgc_to ] )
 					{
-						echo '<li>' . __( 'To', 'wcgiftcards' ) . ': ' . $giftcard[ wcgc_to ] . '</li>';
+						echo '<li>' . __( 'To', 'woocommerce-gift-cards' ) . ': ' . $giftcard[ wcgc_to ] . '</li>';
 					}
 					if ( $giftcard[ wcgc_to_email ] )
 					{
-						echo '<li>' . __( 'Send To', 'wcgiftcards' ) . ': ' . $giftcard[ wcgc_to_email ] . '</li>';
+						echo '<li>' . __( 'Send To', 'woocommerce-gift-cards' ) . ': ' . $giftcard[ wcgc_to_email ] . '</li>';
 					}
 					if ( $giftcard[ wcgc_balance ] )
 					{
-						echo '<li>' . __( 'Balance', 'wcgiftcards' ) . ': ' . woocommerce_price( $giftcard[ wcgc_balance ] ) . '</li>';
+						echo '<li>' . __( 'Balance', 'woocommerce-gift-cards' ) . ': ' . woocommerce_price( $giftcard[ wcgc_balance ] ) . '</li>';
 					}
 					if ( $giftcard[ wcgc_note ] )
 					{
-						echo '<li>' . __( 'Note', 'wcgiftcards' ) . ': ' . $giftcard[ wcgc_note ] . '</li>';
+						echo '<li>' . __( 'Note', 'woocommerce-gift-cards' ) . ': ' . $giftcard[ wcgc_note ] . '</li>';
 					}
 					if ( $giftcard[ wcgc_quantity ] )
 					{
-						echo '<li>' . __( 'Quantity', 'wcgiftcards' ) . ': ' . $giftcard[ wcgc_quantity ] . '</li>';
+						echo '<li>' . __( 'Quantity', 'woocommerce-gift-cards' ) . ': ' . $giftcard[ wcgc_quantity ] . '</li>';
 					}
 					echo '</ul>';
 					echo '</div>';
@@ -387,10 +363,8 @@ class WCGC_Checkout_Hooks
 	}
 
 
-	function wcgc_add_order_giftcard( $total_rows, $order )
+	function add_order_giftcard( $total_rows, $order )
 	{
-		global $woocommerce;
-
 		$return = array();
 
 		$order_id = $order->id;
@@ -400,8 +374,8 @@ class WCGC_Checkout_Hooks
 		if ( $giftCardPayment <> 0 )
 		{
 			$newRow['wcgc_data'] = array(
-				'label' => __( 'Gift Card Payment:', 'wcgiftcards' ),
-				'value' => woocommerce_price( - 1 * $giftCardPayment )
+				'label' => __( 'Gift Card Payment:', 'woocommerce-gift-cards' ),
+				'value' => wc_price( - 1 * $giftCardPayment )
 			);
 
 			if ( get_option( 'woocommerce_enable_giftcard_process' ) == 'no' )
@@ -469,12 +443,10 @@ class WCGC_Checkout_Hooks
 
 		foreach ( $cart as $key => $product )
 		{
-
-			if ( wcgc_is_giftcard( $product['product_id'] ) )
+			if ( WCGC()->is_gift_card( $product['product_id'] ) )
 			{
 				$card[] = $product;
 			}
-
 		}
 
 		if ( ! empty( $card ) )
@@ -482,12 +454,12 @@ class WCGC_Checkout_Hooks
 			echo '<h6>Gift Cards In Cart</h6>';
 			echo '<table width="100%" class="shop_table cart">';
 			echo '<thead>';
-			echo '<tr><td>' . __( 'Gift Card' ) . '</td><td>' . __( 'Name', 'wcgiftcards' ) . '</td><td>' . __( 'Email', 'wcgiftcards' ) . '</td><td>' . __( 'Price', 'wcgiftcards' ) . '</td><td>' . __( 'Note', 'wcgiftcards' ) . '</td></tr>';
+			echo '<tr><td>' . __( 'Gift Card' ) . '</td><td>' . __( 'Name', 'woocommerce-gift-cards' ) . '</td><td>' . __( 'Email', 'woocommerce-gift-cards' ) . '</td><td>' . __( 'Price', 'woocommerce-gift-cards' ) . '</td><td>' . __( 'Note', 'woocommerce-gift-cards' ) . '</td></tr>';
 			echo '</thead>';
 			foreach ( $card as $key => $information )
 			{
 
-				if ( wcgc_is_giftcard( $information['product_id'] ) )
+				if ( WCGC()->is_gift_card( $information['product_id'] ) )
 				{
 					$gift += 1;
 
@@ -495,7 +467,7 @@ class WCGC_Checkout_Hooks
 					echo '<td>Gift Card ' . $gift . '</td>';
 					echo '<td>' . $information["variation"]["To"] . '</td>';
 					echo '<td>' . $information["variation"]["To Email"] . '</td>';
-					echo '<td>' . woocommerce_price( $information["line_total"] ) . '</td>';
+					echo '<td>' . wc_price( $information["line_total"] ) . '</td>';
 					echo '<td>' . $information["variation"]["Note"] . '</td>';
 					echo '</tr>';
 				}
@@ -535,23 +507,23 @@ function woocommerce_apply_giftcard( $giftcard_code )
 					{
 						WC()->session->giftcard_post = $giftcard_id;
 
-						wc_add_notice( __( 'Gift card applied successfully.', 'wcgiftcards' ), 'success' );
+						wc_add_notice( __( 'Gift card applied successfully.', 'woocommerce-gift-cards' ), 'success' );
 
 					} else
 					{
-						wc_add_notice( __( 'Gift Card does not have a balance!', 'wcgiftcards' ), 'error' );
+						wc_add_notice( __( 'Gift Card does not have a balance!', 'woocommerce-gift-cards' ), 'error' );
 					}
 				} else
 				{
-					wc_add_notice( __( 'Gift Card has expired!', 'wcgiftcards' ), 'error' ); // Giftcard Entered has expired
+					wc_add_notice( __( 'Gift Card has expired!', 'woocommerce-gift-cards' ), 'error' ); // Giftcard Entered has expired
 				}
 			} else
 			{
-				wc_add_notice( __( 'Gift Card does not exist!', 'wcgiftcards' ), 'error' ); // Giftcard Entered does not exist
+				wc_add_notice( __( 'Gift Card does not exist!', 'woocommerce-gift-cards' ), 'error' ); // Giftcard Entered does not exist
 			}
 		} else
 		{
-			wc_add_notice( __( 'Gift Card already in the cart!', 'wcgiftcards' ), 'error' );  //  You already have a gift card in the cart
+			wc_add_notice( __( 'Gift Card already in the cart!', 'woocommerce-gift-cards' ), 'error' );  //  You already have a gift card in the cart
 		}
 
 		wc_print_notices();

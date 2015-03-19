@@ -13,7 +13,7 @@ function wcgc_meta_boxes() {
 
 	add_meta_box(
 		'rpgc-woocommerce-data',
-		__( 'Gift Card Data', 'wcgiftcards' ),
+		__( 'Gift Card Data', 'woocommerce-gift-cards' ),
 		'wcgc_meta_box',
 		WCGC()->post_type,
 		'normal',
@@ -26,7 +26,7 @@ function wcgc_meta_boxes() {
 		if ( $data['wcgc_id'][0] <> '' )
 			add_meta_box(
 				'rpgc-order-data',
-				__( 'Gift Card Informaiton', 'wcgiftcards' ),
+				__( 'Gift Card Informaiton', 'woocommerce-gift-cards' ),
 				'wcgc_info_meta_box',
 				'shop_order',
 				'side',
@@ -39,7 +39,7 @@ function wcgc_meta_boxes() {
 	if ( isset ( $_GET['action'] ) )
 		add_meta_box(
 			'rpgc-more-options',
-			__( 'Additional Card Options', 'wcgiftcards' ),
+			__( 'Additional Card Options', 'woocommerce-gift-cards' ),
 			'wcgc_options_meta_box',
 			WCGC()->post_type,
 			'side',
@@ -81,22 +81,22 @@ function wcgc_meta_box( $post ) {
 	woocommerce_wp_textarea_input(
 		array(
 			'id' 			=> 'wcgc_description',
-			'label'			=> __( 'Gift Card description', 'wcgiftcards' ),
+			'label'			=> __( 'Gift Card description', 'woocommerce-gift-cards' ),
 			'placeholder' 	=> '',
-			'description' 	=> __( 'Optionally enter a description for this gift card for your reference.', 'wcgiftcards' ),
+			'description' 	=> __( 'Optionally enter a description for this gift card for your reference.', 'woocommerce-gift-cards' ),
 		)
 	);
 	
 	do_action( 'wcgc_woocommerce_options_after_description' );
 
-	echo '<h2>' . __('Who are you sending this to?',  'wcgiftcards' ) . '</h2>';
+	echo '<h2>' . __('Who are you sending this to?',  'woocommerce-gift-cards' ) . '</h2>';
 	// To
 	woocommerce_wp_text_input(
 		array(
 			'id' 			=> 'wcgc_to',
-			'label' 		=> __( 'To', 'wcgiftcards' ),
+			'label' 		=> __( 'To', 'woocommerce-gift-cards' ),
 			'placeholder' 	=> '',
-			'description' 	=> __( 'Who is getting this gift card.', 'wcgiftcards' ),
+			'description' 	=> __( 'Who is getting this gift card.', 'woocommerce-gift-cards' ),
 		)
 	);
 	// To Email
@@ -104,9 +104,9 @@ function wcgc_meta_box( $post ) {
 		array(
 			'id' 			=> 'wcgc_email_to',
 			'type' 			=> 'email',
-			'label' 		=> __( 'Email To', 'wcgiftcards' ),
+			'label' 		=> __( 'Email To', 'woocommerce-gift-cards' ),
 			'placeholder' 	=> '',
-			'description' 	=> __( 'What email should we send this gift card to.', 'wcgiftcards' ),
+			'description' 	=> __( 'What email should we send this gift card to.', 'woocommerce-gift-cards' ),
 		)
 	);
 
@@ -114,9 +114,9 @@ function wcgc_meta_box( $post ) {
 	woocommerce_wp_text_input(
 		array(
 			'id' 			=> 'wcgc_from',
-			'label' 		=> __( 'From', 'wcgiftcards' ),
+			'label' 		=> __( 'From', 'woocommerce-gift-cards' ),
 			'placeholder' 	=> '',
-			'description' 	=> __( 'Who is sending this gift card.', 'wcgiftcards' ),
+			'description' 	=> __( 'Who is sending this gift card.', 'woocommerce-gift-cards' ),
 		)
 	);
 	// From Email
@@ -124,9 +124,9 @@ function wcgc_meta_box( $post ) {
 		array(
 			'id' 			=> 'wcgc_email_from',
 			'type'	 		=> 'email',
-			'label' 		=> __( 'Email From', 'wcgiftcards' ),
+			'label' 		=> __( 'Email From', 'woocommerce-gift-cards' ),
 			'placeholder' 	=> '',
-			'description' 	=> __( 'What email account is sending this gift card.', 'wcgiftcards' ),
+			'description' 	=> __( 'What email account is sending this gift card.', 'woocommerce-gift-cards' ),
 		)
 	);
 	
@@ -134,7 +134,7 @@ function wcgc_meta_box( $post ) {
 
 	echo '</div><div class="panel woocommerce_options_panel">';
 
-	echo '<h2>' . __('Personalize it',  'wcgiftcards' ) . '</h2>';
+	echo '<h2>' . __('Personalize it',  'woocommerce-gift-cards' ) . '</h2>';
 	
 	do_action( 'wcgc_woocommerce_options_before_personalize' );
 	
@@ -142,9 +142,9 @@ function wcgc_meta_box( $post ) {
 	woocommerce_wp_text_input(
 		array(
 			'id'     					=> 'wcgc_amount',
-			'label'   					=> __( 'Gift Card Amount', 'wcgiftcards' ),
+			'label'   					=> __( 'Gift Card Amount', 'woocommerce-gift-cards' ),
 			'placeholder'  				=> '0.00',
-			'description'  				=> __( 'Value of the Gift Card.', 'wcgiftcards' ),
+			'description'  				=> __( 'Value of the Gift Card.', 'woocommerce-gift-cards' ),
 			'type'    					=> 'number',
 			'custom_attributes' 		=> array( 'step' => 'any', 'min' => '0' )
 		)
@@ -155,9 +155,9 @@ function wcgc_meta_box( $post ) {
 			woocommerce_wp_text_input(
 				array(
 					'id'    			=> 'wcgc_balance',
-					'label'    			=> __( 'Gift Card Balance', 'wcgiftcards' ),
+					'label'    			=> __( 'Gift Card Balance', 'woocommerce-gift-cards' ),
 					'placeholder'  		=> '0.00',
-					'description'  		=> __( 'Remaining Balance of the Gift Card.', 'wcgiftcards' ),
+					'description'  		=> __( 'Remaining Balance of the Gift Card.', 'woocommerce-gift-cards' ),
 					'type'    			=> 'number',
 					'custom_attributes' => array( 'step' => 'any', 'min' => '0' )
 				)
@@ -168,8 +168,8 @@ function wcgc_meta_box( $post ) {
 	woocommerce_wp_textarea_input(
 		array(
 			'id' 						=> 'wcgc_note',
-			'label' 					=> __( 'Gift Card Note', 'wcgiftcards' ),
-			'description' 				=> __( 'Enter a message to your customer.', 'wcgiftcards' ),
+			'label' 					=> __( 'Gift Card Note', 'woocommerce-gift-cards' ),
+			'description' 				=> __( 'Enter a message to your customer.', 'woocommerce-gift-cards' ),
 			'class' 					=> 'short'
 			
 		)
@@ -179,9 +179,9 @@ function wcgc_meta_box( $post ) {
 	woocommerce_wp_text_input(
 		array(
 			'id' 						=> 'wcgc_expiry_date',
-			'label' 					=> __( 'Expiry date', 'wcgiftcards' ),
-			'placeholder' 				=> _x( 'Never expire', 'placeholder', 'wcgiftcards' ),
-			'description' 				=> __( 'The date this Gift Card will expire, <code>YYYY-MM-DD</code>.', 'wcgiftcards' ),
+			'label' 					=> __( 'Expiry date', 'woocommerce-gift-cards' ),
+			'placeholder' 				=> _x( 'Never expire', 'placeholder', 'woocommerce-gift-cards' ),
+			'description' 				=> __( 'The date this Gift Card will expire, <code>YYYY-MM-DD</code>.', 'woocommerce-gift-cards' ),
 			'class' 					=> 'date-picker, short',
 			'custom_attributes' 		=> array( 'pattern' => "[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" )
 		)
@@ -211,15 +211,15 @@ function wcgc_options_meta_box( $post ) {
 
 	if( $post->post_status <> 'zerobalance' ) {
 		// Regenerate the Card Number
-		woocommerce_wp_checkbox( array( 'id' => 'wcgc_resend_email', 'label' => __( 'Send Gift Card Email', 'wcgiftcards' ) ) );
+		woocommerce_wp_checkbox( array( 'id' => 'wcgc_resend_email', 'label' => __( 'Send Gift Card Email', 'woocommerce-gift-cards' ) ) );
 
 		// Regenerate the Card Number
-		woocommerce_wp_checkbox( array( 'id' => 'wcgc_regen_number', 'label' => __( 'Regenerate Card Number', 'wcgiftcards' ) ) );
+		woocommerce_wp_checkbox( array( 'id' => 'wcgc_regen_number', 'label' => __( 'Regenerate Card Number', 'woocommerce-gift-cards' ) ) );
 
 		do_action( 'wcgc_add_more_options' );
 
 	} else {
-		_e( 'No additional options available. Zero balance', 'wcgiftcards' );
+		_e( 'No additional options available. Zero balance', 'woocommerce-gift-cards' );
 
 		
 	}
@@ -245,13 +245,13 @@ function wcgc_info_meta_box( $post ) {
 	echo '    <div class="options_group">';
 		echo '<ul>';
 			if ( isset( $orderCardNumber ) )
-				echo '<li>' . __( 'Gift Card #:', 'wcgiftcards' ) . ' ' . esc_attr( $orderCardNumber ) . '</li>';
+				echo '<li>' . __( 'Gift Card #:', 'woocommerce-gift-cards' ) . ' ' . esc_attr( $orderCardNumber ) . '</li>';
 
 			if ( isset( $orderCardPayment ) )
-				echo '<li>' . __( 'Payment:', 'wcgiftcards' ) . ' ' . wc_price( $orderCardPayment ) . '</li>';
+				echo '<li>' . __( 'Payment:', 'woocommerce-gift-cards' ) . ' ' . wc_price( $orderCardPayment ) . '</li>';
 
 			if ( isset( $orderCardBalance ) )
-				echo '<li>' . __( 'Balance remaining:', 'wcgiftcards' ) . ' ' . wc_price( $orderCardBalance ) . '</li>';
+				echo '<li>' . __( 'Balance remaining:', 'woocommerce-gift-cards' ) . ' ' . wc_price( $orderCardBalance ) . '</li>';
 
 		echo '</ul>';
 
@@ -260,9 +260,9 @@ function wcgc_info_meta_box( $post ) {
 		if ( $giftcard_found ) {
 			echo '<div>';
 				$link = 'post.php?post=' . $giftcard_found . '&action=edit';
-				echo '<a href="' . admin_url( $link ) . '">' . __('Access Gift Card', 'wcgiftcards') . '</a>';
+				echo '<a href="' . admin_url( $link ) . '">' . __('Access Gift Card', 'woocommerce-gift-cards') . '</a>';
 				if( isset( $isAlreadyRefunded ) )
-					echo  '<br /><span style="color: #dd0000;">' . __( 'Gift card refunded ', 'wcgiftcards' ) . ' ' . wc_price( $orderCardPayment ) . '</span>';
+					echo  '<br /><span style="color: #dd0000;">' . __( 'Gift card refunded ', 'woocommerce-gift-cards' ) . ' ' . wc_price( $orderCardPayment ) . '</span>';
 			echo '</div>';
 		
 		}
@@ -282,7 +282,7 @@ function wcgc_giftcard_usage_data( $post ) {
 		
 									
 			<h2 style="margin: 0;">
-				<span><?php _e( 'Card Usage Details', 'wcgiftcards' ); ?></span>
+				<span><?php _e( 'Card Usage Details', 'woocommerce-gift-cards' ); ?></span>
 			</h2>
 
 
@@ -298,13 +298,13 @@ function wcgc_giftcard_usage_data( $post ) {
 
 				<div class="edd-admin-box-inside">
 					<p>
-						<strong><?php _e( 'Order Number:', 'wcgiftcards' ); ?></strong>&nbsp;
+						<strong><?php _e( 'Order Number:', 'woocommerce-gift-cards' ); ?></strong>&nbsp;
 						<span><a href="<?php echo $orederLink; ?>"><?php echo esc_attr( $giftID ); ?></a></span>
 						<br />
-						<strong><?php _e( 'Amount Used:', 'wcgiftcards' ); ?></strong>&nbsp;
+						<strong><?php _e( 'Amount Used:', 'woocommerce-gift-cards' ); ?></strong>&nbsp;
 						<span><?php echo edd_format_giftcard_rate( 0, $giftcardPayment ); ?></span>
 						<br />
-						<strong><?php _e( 'Card Balance After Order:', 'wcgiftcards' ); ?></strong>&nbsp;
+						<strong><?php _e( 'Card Balance After Order:', 'woocommerce-gift-cards' ); ?></strong>&nbsp;
 						<span><?php echo edd_format_giftcard_rate( 0, $giftcarBalance ); ?></span>
 					</p>
 				</div>

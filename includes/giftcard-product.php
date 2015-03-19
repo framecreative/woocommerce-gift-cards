@@ -11,8 +11,8 @@ function wcgc_extra_check( $product_type_options ) {
 		'giftcard' => array(
 			'id' => '_giftcard',
 			'wrapper_class' => 'show_if_simple show_if_variable',
-			'label' => __( 'Gift Card', 'wcgiftcards' ),
-			'description' => __( 'Make product a gift card.', 'wcgiftcards' )
+			'label' => __( 'Gift Card', 'woocommerce-gift-cards' ),
+			'description' => __( 'Make product a gift card.', 'woocommerce-gift-cards' )
 		),
 	);
 

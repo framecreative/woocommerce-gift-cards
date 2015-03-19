@@ -17,15 +17,15 @@ function wcgc_add_columns( $columns ) {
 
 	//all of your columns will be added before the actions column on the Giftcard page
 
-	$new_columns["title"]		= __( 'Giftcard Number', 'wcgiftcards' );
-	$new_columns["amount"]		= __( 'Giftcard Amount', 'wcgiftcards' );
-	$new_columns["balance"]		= __( 'Remaining Balance', 'wcgiftcards' );
-	$new_columns["buyer"]		= __( 'Buyer', 'wcgiftcards' );
-	$new_columns["recipient"]	= __( 'Recipient', 'wcgiftcards' );
-	$new_columns["expiry_date"]	= __( 'Expiry date', 'wcgiftcards' );
+	$new_columns["title"]		= __( 'Giftcard Number', 'woocommerce-gift-cards' );
+	$new_columns["amount"]		= __( 'Giftcard Amount', 'woocommerce-gift-cards' );
+	$new_columns["balance"]		= __( 'Remaining Balance', 'woocommerce-gift-cards' );
+	$new_columns["buyer"]		= __( 'Buyer', 'woocommerce-gift-cards' );
+	$new_columns["recipient"]	= __( 'Recipient', 'woocommerce-gift-cards' );
+	$new_columns["expiry_date"]	= __( 'Expiry date', 'woocommerce-gift-cards' );
 
 	$new_columns['comments']	= $columns['comments'];
-	$new_columns['date']		= __( 'Creation Date', 'wcgiftcards' );
+	$new_columns['date']		= __( 'Creation Date', 'woocommerce-gift-cards' );
 
 	return  apply_filters( 'wcgc_giftcard_columns', $new_columns);
 }

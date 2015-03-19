@@ -18,7 +18,7 @@ class WCGC_Settings extends WC_Settings_Page
 	public function __construct()
 	{
 		$this->id    = 'giftcard';
-		$this->label = __( 'Gift Cards',  'wcgiftcards'  );
+		$this->label = __( 'Gift Cards',  'woocommerce-gift-cards'  );
 
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
@@ -38,7 +38,7 @@ class WCGC_Settings extends WC_Settings_Page
 	public function get_sections()
 	{
 
-		$sections = apply_filters( 'woocommerce_add_section_giftcard', array( '' => __( 'Gift Card Options', 'wcgiftcards' ) ) );
+		$sections = apply_filters( 'woocommerce_add_section_giftcard', array( '' => __( 'Gift Card Options', 'woocommerce-gift-cards' ) ) );
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
 	}
@@ -99,11 +99,11 @@ class WCGC_Settings extends WC_Settings_Page
 
 			$options = apply_filters( 'woocommerce_giftcard_settings', array(
 
-				array( 'title' 		=> __( 'Processing Options',  'wcgiftcards'  ), 'type' => 'title', 'id' => 'giftcard_processing_options_title' ),
+				array( 'title' 		=> __( 'Processing Options',  'woocommerce-gift-cards'  ), 'type' => 'title', 'id' => 'giftcard_processing_options_title' ),
 
 				array(
-					'title'         => __( 'Display on Cart?',  'wcgiftcards'  ),
-					'desc'          => __( 'Display the giftcard form on the cart page.',  'wcgiftcards'  ),
+					'title'         => __( 'Display on Cart?',  'woocommerce-gift-cards'  ),
+					'desc'          => __( 'Display the giftcard form on the cart page.',  'woocommerce-gift-cards'  ),
 					'id'            => 'woocommerce_enable_giftcard_cartpage',
 					'default'       => 'no',
 					'type'          => 'checkbox',
@@ -111,8 +111,8 @@ class WCGC_Settings extends WC_Settings_Page
 				),
 
 				array(
-					'title'         => __( 'Display on Checkout?',  'wcgiftcards'  ),
-					'desc'          => __( 'Display the giftcard form on the checkout page.',  'wcgiftcards'  ),
+					'title'         => __( 'Display on Checkout?',  'woocommerce-gift-cards'  ),
+					'desc'          => __( 'Display the giftcard form on the checkout page.',  'woocommerce-gift-cards'  ),
 					'id'            => 'woocommerce_enable_giftcard_checkoutpage',
 					'default'       => 'yes',
 					'type'          => 'checkbox',
@@ -121,8 +121,8 @@ class WCGC_Settings extends WC_Settings_Page
 
 
 				array(
-					'title'         => __( 'Customize Add to Cart?',  'wcgiftcards'  ),
-					'desc'          => __( 'Change Add to cart label and disable add to cart from product list.',  'wcgiftcards'  ),
+					'title'         => __( 'Customize Add to Cart?',  'woocommerce-gift-cards'  ),
+					'desc'          => __( 'Change Add to cart label and disable add to cart from product list.',  'woocommerce-gift-cards'  ),
 					'id'            => 'woocommerce_enable_addtocart',
 					'default'       => 'no',
 					'type'          => 'checkbox',
@@ -132,11 +132,11 @@ class WCGC_Settings extends WC_Settings_Page
 
 				array( 'type' => 'sectionend', 'id' => 'account_registration_options'),
 
-				array( 'title' 		=> __( 'Gift Card Uses',  'wcgiftcards'  ), 'type' => 'title', 'id' => 'giftcard_products_title' ),
+				array( 'title' 		=> __( 'Gift Card Uses',  'woocommerce-gift-cards'  ), 'type' => 'title', 'id' => 'giftcard_products_title' ),
 
 				array(
-					'title'         => __( 'Shipping',  'wcgiftcards'  ),
-					'desc'          => __( 'Allow customers to pay for shipping with their gift card.',  'wcgiftcards'  ),
+					'title'         => __( 'Shipping',  'woocommerce-gift-cards'  ),
+					'desc'          => __( 'Allow customers to pay for shipping with their gift card.',  'woocommerce-gift-cards'  ),
 					'id'            => 'woocommerce_enable_giftcard_charge_shipping',
 					'default'       => 'no',
 					'type'          => 'checkbox',
@@ -144,8 +144,8 @@ class WCGC_Settings extends WC_Settings_Page
 				),
 
 				array(
-					'title'         => __( 'Tax',  'wcgiftcards'  ),
-					'desc'          => __( 'Allow customers to pay for tax with their gift card.',  'wcgiftcards'  ),
+					'title'         => __( 'Tax',  'woocommerce-gift-cards'  ),
+					'desc'          => __( 'Allow customers to pay for tax with their gift card.',  'woocommerce-gift-cards'  ),
 					'id'            => 'woocommerce_enable_giftcard_charge_tax',
 					'default'       => 'no',
 					'type'          => 'checkbox',
@@ -153,8 +153,8 @@ class WCGC_Settings extends WC_Settings_Page
 				),
 
 				array(
-					'title'         => __( 'Fee',  'wcgiftcards'  ),
-					'desc'          => __( 'Allow customers to pay for fees with their gift card.',  'wcgiftcards'  ),
+					'title'         => __( 'Fee',  'woocommerce-gift-cards'  ),
+					'desc'          => __( 'Allow customers to pay for fees with their gift card.',  'woocommerce-gift-cards'  ),
 					'id'            => 'woocommerce_enable_giftcard_charge_fee',
 					'default'       => 'no',
 					'type'          => 'checkbox',
@@ -195,9 +195,9 @@ class WCGC_Settings extends WC_Settings_Page
 
 			if ( ! class_exists( 'WCGC_Auto_Send' ) )
 			{
-				$addons[$i]["title"] = __( 'Auto Send Card', 'wcgiftcards' );
+				$addons[$i]["title"] = __( 'Auto Send Card', 'woocommerce-gift-cards' );
 				$addons[$i]["image"] = "";
-				$addons[$i]["excerpt"] = __( 'Save time creating gift cards by using this plugin.  Enable it and customers will have their gift card sent out directly upon purchase or payment.', 'wcgiftcards' );
+				$addons[$i]["excerpt"] = __( 'Save time creating gift cards by using this plugin.  Enable it and customers will have their gift card sent out directly upon purchase or payment.', 'woocommerce-gift-cards' );
 				$addons[$i]["link"] = "https://wp-ronin.com/downloads/auto-send-email-woocommerce-gift-cards/";
 				$i++;
 			}
@@ -230,12 +230,12 @@ class WCGC_Settings extends WC_Settings_Page
 		?>
 			<tr valign="top" class="">
 				<th class="titledesc" scope="row">
-					<?php _e( 'Exclude products', 'wcgiftcards' ); ?>
-					<img class="help_tip" data-tip='<?php _e( 'Products which gift cards can not be used on', 'wcgiftcards' ); ?>' src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" />
+					<?php _e( 'Exclude products', 'woocommerce-gift-cards' ); ?>
+					<img class="help_tip" data-tip='<?php _e( 'Products which gift cards can not be used on', 'woocommerce-gift-cards' ); ?>' src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" />
 				</th>
 					<td class="forminp forminp-checkbox">
 					<fieldset>
-						<input type="hidden" class="wc-product-search" data-multiple="true" style="width: 50%;" name="exclude_product_ids" data-placeholder="<?php _e( 'Search for a product&hellip;', 'wcgiftcards' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-selected="<?php
+						<input type="hidden" class="wc-product-search" data-multiple="true" style="width: 50%;" name="exclude_product_ids" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woocommerce-gift-cards' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-selected="<?php
 							$product_ids = array_filter( array_map( 'absint', explode( ',', get_option( 'exclude_product_ids' ) ) ) );
 							$json_ids    = array();
 

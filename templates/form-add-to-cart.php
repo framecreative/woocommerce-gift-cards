@@ -5,7 +5,7 @@
 
 	<div class="wcgc-add-to-cart">
 
-		<div class="wcgc-product-message"><?php _e('All fields below are required', 'wcgiftcards' ); ?></div>
+		<div class="wcgc-product-message"><?php _e('All fields below are required', 'woocommerce-gift-cards' ); ?></div>
 
 		<?php  do_action( WCGC()->plugin_prefix . 'before_product_fields' ); ?>
 

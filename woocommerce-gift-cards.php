@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Gift Cards
 Plugin URI: http://framecreative.com.au
 Description: Allow your customers to send gift cards.
-Version: 1.0.0
+Version: 2.0.0
 Author: Frame Creative
 Author URI: http://framecreative.com.au
 */
@@ -244,7 +244,7 @@ class WC_Gift_Cards
 
 
 	/**
-	 * @param $gift_card
+	 * @param $gift_card WC_Gift_Card object
 	 */
 	function send_gift_card_email( $gift_card )
 	{
@@ -255,16 +255,7 @@ class WC_Gift_Cards
 			__( 'You have been sent a gift card', 'woocommerce-gift-cards' )
 		);
 
-
-		$mailer = WC()->mailer();
-
-		// Get email body
-		ob_start();
-		wc_get_template('email-gift-recipient.php', array( 'gift_card' => $gift_card ), $this->theme_template_path, $this->plugin_template_path );
-		$email_body = ob_get_clean();
-		$email_body = apply_filters( $this->plugin_prefix . 'gift_card_email_body', $email_body, $gift_card );
-
-		$email_html = $mailer->wrap_message( $subject, $email_body );
+		$email_html = $this->generate_email_html( $subject, $gift_card );
 
 		$headers = "From: " . $send_email . "\r\n" . " Reply-To: " . $send_email . "\r\n" . " Content-Type: text/html\r\n";
 
@@ -278,6 +269,28 @@ class WC_Gift_Cards
 		remove_filter( 'wp_mail_from_name', array( $this, 'from_name' ) );
 
 		$gift_card->set_email_sent();
+	}
+
+
+	/**
+	 * @param $subject
+	 * @param $gift_card WC_Gift_Card object
+	 *
+	 * @return string
+	 */
+	function generate_email_html( $subject, $gift_card )
+	{
+		$mailer = WC()->mailer();
+
+		// Get email body
+		ob_start();
+		wc_get_template('email-gift-recipient.php', array( 'gift_card' => $gift_card ), $this->theme_template_path, $this->plugin_template_path );
+		$email_body = ob_get_clean();
+		$email_body = apply_filters( $this->plugin_prefix . 'gift_card_email_body', $email_body, $gift_card );
+
+		$email_html = $mailer->wrap_message( $subject, $email_body );
+
+		return $email_html;
 	}
 
 

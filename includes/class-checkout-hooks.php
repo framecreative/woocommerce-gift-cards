@@ -25,8 +25,6 @@ class WCGC_Checkout_Hooks
 
 		add_action( 'woocommerce_add_to_cart', array( $this, 'add_card_data' ), 10, 3 );
 
-		add_action( 'woocommerce_after_cart_table', array( $this, 'display_giftcard_in_cart' ) );
-
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_gift_card' ) );
 		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_gift_card' ) );
 
@@ -432,48 +430,6 @@ class WCGC_Checkout_Hooks
 			unset( WC()->session->giftcard_data );
 		}
 
-	}
-
-
-	function display_giftcard_in_cart()
-	{
-		$cart = WC()->session->cart;
-		$gift = 0;
-		$card = array();
-
-		foreach ( $cart as $key => $product )
-		{
-			if ( WCGC()->is_gift_card( $product['product_id'] ) )
-			{
-				$card[] = $product;
-			}
-		}
-
-		if ( ! empty( $card ) )
-		{
-			echo '<h6>Gift Cards In Cart</h6>';
-			echo '<table width="100%" class="shop_table cart">';
-			echo '<thead>';
-			echo '<tr><td>' . __( 'Gift Card' ) . '</td><td>' . __( 'Name', 'woocommerce-gift-cards' ) . '</td><td>' . __( 'Email', 'woocommerce-gift-cards' ) . '</td><td>' . __( 'Price', 'woocommerce-gift-cards' ) . '</td><td>' . __( 'Note', 'woocommerce-gift-cards' ) . '</td></tr>';
-			echo '</thead>';
-			foreach ( $card as $key => $information )
-			{
-
-				if ( WCGC()->is_gift_card( $information['product_id'] ) )
-				{
-					$gift += 1;
-
-					echo '<tr style="font-size: 0.8em">';
-					echo '<td>Gift Card ' . $gift . '</td>';
-					echo '<td>' . $information["variation"]["To"] . '</td>';
-					echo '<td>' . $information["variation"]["To Email"] . '</td>';
-					echo '<td>' . wc_price( $information["line_total"] ) . '</td>';
-					echo '<td>' . $information["variation"]["Note"] . '</td>';
-					echo '</tr>';
-				}
-			}
-			echo '</table>';
-		}
 	}
 
 

@@ -6,15 +6,18 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
-	/* AJAX Coupon Form Submission */
 	$('form.checkout_giftcard').submit( function() {
 		var $form = $(this);
 
-		if ( $form.is('.processing') ) return false;
+		if ( $form.is( '.processing' ) ) return false;
 
-		$form.addClass('processing').block({message: null, overlayCSS: {
-			background: '#fff url(' + woocommerce_params.ajax_loader_url + ') no-repeat center', backgroundSize: '16px 16px', opacity: 0.6
-		}});
+		$form.addClass( 'processing' ).block({
+			message: null,
+			overlayCSS: {
+				background: '#fff',
+				opacity: 0.6
+			}
+		});
 
 		var data = {
 			action: 			'woocommerce_apply_giftcard',
@@ -41,8 +44,6 @@ jQuery(document).ready(function($){
 		});
 		return false;
 	});
-
-
 
 });
 

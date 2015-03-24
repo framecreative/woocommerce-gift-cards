@@ -300,7 +300,7 @@ class WC_Gift_Cards
 	 */
 	function from_email()
 	{
-		return apply_filters( $this->plugin_prefix . 'from_email', get_option('admin_email') );
+		return apply_filters( $this->plugin_prefix . 'from_email', WC()->mailer()->get_from_address() );
 	}
 
 
@@ -310,7 +310,7 @@ class WC_Gift_Cards
 	 */
 	function from_name()
 	{
-		return apply_filters( $this->plugin_prefix . 'from_name', get_option('blogname') );
+		return apply_filters( $this->plugin_prefix . 'from_name', WC()->mailer()->get_from_name() );
 	}
 
 

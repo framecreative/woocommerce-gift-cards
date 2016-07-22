@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WooCommerce Gift Cards
+Plugin Name: Frame WooCommerce Gift Cards
 Plugin URI: http://framecreative.com.au
 Description: Allow your customers to send gift cards.
 Version: 2.0.0

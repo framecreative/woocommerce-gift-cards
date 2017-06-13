@@ -1,11 +1,12 @@
 <?php
 /*
-Plugin Name: Frame WooCommerce Gift Cards
-Plugin URI: http://framecreative.com.au
-Description: Allow your customers to send gift cards.
-Version: 3.0.0
-Author: Frame Creative
-Author URI: http://framecreative.com.au
+    Plugin Name: Frame WooCommerce Gift Cards
+    Plugin URI: https://bitbucket.org/framecreative/woocommerce-gift-cards
+    Description: Allow your customers to send gift cards.
+    Version: 3.0.1
+    Author: Frame Creative
+    Author URI: http://framecreative.com.au
+    GitHub Plugin URI: https://bitbucket.org/framecreative/woocommerce-gift-cards
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -13,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class WC_Gift_Cards
 {
-	public $plugin_version = '3.0.0';
+	public $plugin_version = '3.0.1';
 	public $plugin_prefix;
 	public $plugin_url;
 	public $plugin_path;

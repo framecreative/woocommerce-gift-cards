@@ -3,7 +3,7 @@
 Plugin Name: Frame WooCommerce Gift Cards
 Plugin URI: http://framecreative.com.au
 Description: Allow your customers to send gift cards.
-Version: 2.0.1
+Version: 3.0.0
 Author: Frame Creative
 Author URI: http://framecreative.com.au
 */
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class WC_Gift_Cards
 {
-	public $plugin_version = '1.0.0';
+	public $plugin_version = '3.0.0';
 	public $plugin_prefix;
 	public $plugin_url;
 	public $plugin_path;
@@ -79,7 +79,7 @@ class WC_Gift_Cards
 			// Create all admin functions and pages
 			require_once $this->plugin_path . 'admin/columns.php';
 			require_once $this->plugin_path . 'admin/metabox.php';
-			
+
 		}
 
 		// Required on checkout

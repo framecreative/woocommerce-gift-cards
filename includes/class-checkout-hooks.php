@@ -288,8 +288,8 @@ class WCGC_Checkout_Hooks
 	function display_gift_card( $order )
 	{
 
-		$theIDNum   = get_post_meta( $order->id, 'wcgc_id', true );
-		$theBalance = get_post_meta( $order->id, 'wcgc_balance', true );
+		$theIDNum   = get_post_meta( $order->get_id(), 'wcgc_id', true );
+		$theBalance = get_post_meta( $order->get_id(), 'wcgc_balance', true );
 
 		if ( isset( $theIDNum ) )
 		{
@@ -303,7 +303,7 @@ class WCGC_Checkout_Hooks
 			}
 		}
 
-		$theGiftCardData = get_post_meta( $order->id, 'wcgc_data', true );
+		$theGiftCardData = get_post_meta( $order->get_id(), 'wcgc_data', true );
 		if ( isset( $theGiftCardData ) )
 		{
 			if ( $theGiftCardData <> '' )
@@ -365,7 +365,7 @@ class WCGC_Checkout_Hooks
 	{
 		$return = array();
 
-		$order_id = $order->id;
+		$order_id = $order->get_id();
 
 		$giftCardPayment = get_post_meta( $order_id, 'wcgc_payment', true );
 
@@ -486,5 +486,3 @@ function woocommerce_apply_giftcard( $giftcard_code )
 
 	}
 }
-
-

@@ -1,0 +1,15 @@
+{
+    "name": "framecreative/woocommerce-gift-cards",
+    "description": "A Wordpress Plugin for WooCommerce to add gift cards",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Frame Creative",
+            "email": "digital@framecreative.com.au"
+        }
+    ],
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
